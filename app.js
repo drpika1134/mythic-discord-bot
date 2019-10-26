@@ -20,12 +20,16 @@ bot.on('ready', () => {
 bot.on('message', message => {
   // Listen for command
   if (message.content.startsWith('m!')) {
-    let args = message.content.slice(2).split(' ')
-    let command = args.shift().toLowerCase()
+    let content = message.content.slice(2).split(' ')
+    let command = content.shift().toLowerCase()
     try {
       // Look for the approriate file and execute it
       const commandFile = require(`./commands/${command}.js`)
-      commandFile.run(args, message)
+
+      content = content.filter(item => {
+        return /\S/.test(item)
+      })
+      commandFile.run(content, message)
     } catch (error) {
       // If the file doesn't exist, throw an error
       console.log(error)
