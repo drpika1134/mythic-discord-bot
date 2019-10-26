@@ -19,7 +19,6 @@ const LogSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    // expires: 86400,/
     default: Date.now
   }
 })
