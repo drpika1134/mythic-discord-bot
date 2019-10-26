@@ -15,29 +15,29 @@ function validateInput(content) {
   return true
 }
 
-async function depositToAccount(name, rss, bot) {
+async function withdrawFromAccount(name, rss, bot) {
   await User.findOne({ name }, (err, user) => {
     if (err) {
       return
     }
     let account = user.account
-    user.account.money = parseFloat((account.money + rss[0]).toFixed(2))
-    user.account.food = parseFloat((account.food + rss[1]).toFixed(2))
-    user.account.gasoline = parseFloat((account.gasoline + rss[8]).toFixed(2))
-    user.account.munition = parseFloat((account.munition + rss[9]).toFixed(2))
-    user.account.steel = parseFloat((account.steel + rss[10]).toFixed(2))
-    user.account.alum = parseFloat((account.alum + rss[11]).toFixed(2))
-    user.account.ura = parseFloat((account.ura + rss[4]).toFixed(2))
-    user.account.coal = parseFloat((account.coal + rss[2]).toFixed(2))
-    user.account.oil = parseFloat((account.oil + rss[3]).toFixed(2))
-    user.account.lead = parseFloat((account.lead + rss[5]).toFixed(2))
-    user.account.iron = parseFloat((account.iron + rss[6]).toFixed(2))
-    user.account.bauxite = parseFloat((account.bauxite + rss[7]).toFixed(2))
+    user.account.money = parseFloat((account.money - rss[0]).toFixed(2))
+    user.account.food = parseFloat((account.food - rss[1]).toFixed(2))
+    user.account.gasoline = parseFloat((account.gasoline - rss[8]).toFixed(2))
+    user.account.munition = parseFloat((account.munition - rss[9]).toFixed(2))
+    user.account.steel = parseFloat((account.steel - rss[10]).toFixed(2))
+    user.account.alum = parseFloat((account.alum - rss[11]).toFixed(2))
+    user.account.ura = parseFloat((account.ura - rss[4]).toFixed(2))
+    user.account.coal = parseFloat((account.coal - rss[2]).toFixed(2))
+    user.account.oil = parseFloat((account.oil - rss[3]).toFixed(2))
+    user.account.lead = parseFloat((account.lead - rss[5]).toFixed(2))
+    user.account.iron = parseFloat((account.iron - rss[6]).toFixed(2))
+    user.account.bauxite = parseFloat((account.bauxite - rss[7]).toFixed(2))
 
     user.markModified('account')
     user.save()
 
-    bot.reply('Successfully deposited')
+    bot.reply('Successfully Withdrew')
   })
 }
 
@@ -54,7 +54,7 @@ async function recordLog(name, rss) {
 
   const newLog = new Log({
     name: name,
-    type: 'Deposit',
+    type: 'Withdraw',
     date: UTC_time,
     resources: {
       money: rss[0],
@@ -92,7 +92,7 @@ module.exports = {
       for (let i = 0; i < user_id.length; i++) {
         const id = user_id[i]
         if (bot.member.id == id) {
-          depositToAccount(users[id], content, bot)
+          withdrawFromAccount(users[id], content, bot)
           recordLog(users[id], content)
         }
       }
